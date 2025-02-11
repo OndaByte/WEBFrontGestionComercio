@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Clientes</title>
+        <!--librarys-->
+        <link href="assets/boostrap-links/style.css" rel="stylesheet" />
+        <link href="assets/boostrap-links/bootstrap.min.css" rel="stylesheet">
+        <script src="assets/boostrap-links/all.js"></script>
+        <script src="assets/boostrap-links/bootstrap.bundle.min.js" ></script>
+        <script src="assets/boostrap-links/simple-datatables@latest"></script>
+        <!--css-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/estilos.css" rel="stylesheet" />
+        <link href="js/clientes/estilos.css" rel="stylesheet" />
+        <!--js-->
+        <script src="js/servicio/api.js"></script>
+        <script src="js/clientes/logica.js"></script> 
+        <!--componentes-->
+        <script src="componentes/footer.js"></script>
+        <script src="componentes/barra-nav.js"></script>
+        <script src="componentes/barra-main.js"></script>
+    </head>
+    <!------------
+        TODO:
+    ------------->
+    <body class="sb-nav-fixed">
+        <barra-nav name="LiliNav"></barra-nav>
+        <div id="layoutSidenav">
+            <barra-main name="LiliMain"></barra-main>
+            <!--CONTENIDO-->
+            <div class="fondo" id="layoutSidenav_content">
+                <main>
+                    <div id="work-space" class="container-fluid px-4" >
+                        <!--CABECERA-->
+                        <div class="row pt-2">
+                            <div class="col-2">
+                                <h2 class="warning">CLIENTES</h2>
+                            </div>
+                            <div class="col-xl-4 col-md-3">
+                                <div class="input-group">
+                                    <input type="search" id="busqueda" class="form-control"
+                                        placeholder="Buscar Cliente.."
+                                        aria-label="Search" onkeyup="filtrarTabla('busqueda','tabla_clientes')"
+                                        aria-describedby="search-addon"/>
+                                    <span class="input-group-text " id="search-addon">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-2">
+                                <button type="button" id="botonCliente" class="btn btn-primary text-dark"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalCliente">Nuevo Cliente
+                                </button>
+                            </div>
+                            <div id="blank" class="col-xl-2 col-md-2">
+    
+                            </div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">
+                                <div id="panelPrincipal">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end mx-2">
+                            <div class="col">
+                                <button type="button" class="btn btn-light bg-light" id="btnPrev">Prev</button>
+                                <button type="button" class="btn btn-primary text-dark" id="btnSig">Sig</button>
+                                Pagina: <span id="indicePag"></span>
+                            </div>
+                        </div>
+                        <!--
+                            ...CUERPO...
+                        -->
+                        
+                        <!--MODALES-->
+                        <div class="modal fade " id="modalCliente" tabindex="-1" aria-hidden="true" aria-labelledby="modalClienteLabel"
+                            data-bs-backdrop="static" data-bs-keyboard="false" role="dialog">
+                        
+                            <div class="modal-dialog col-lg-7" role="document">
+                                <div class="modal-content " id="form-cliente">
+                                    <div class="modal-header menu-interno">
+                                        <div class=" w-100 justify-content-center">
+                                            <h3 id="modalTitulo" class="text-center font-weight-light my-4">Ingresar cliente</h3>
+                                        </div>
+                                        <button style="margin-right: 10px;" type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Cerrar" onclick="limpiarForm('formCliente')">
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="formCliente">
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" id="nombre" type="text" placeholder="Enter your first name"
+                                                            oninput="controlInput('nombre',num=false)" />
+                                                        <label for="nombre">Nombre</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-floating">
+                                                        <input class="form-control" id="telefono" type="text" placeholder="Enter your last name"
+                                                            oninput="controlInput('telefono',num=true)" />
+                                                        <label for="telefono">Telefono</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="direccion" type="text" placeholder="name@example.com" />
+                                                <label for="direccion">Direccion</label>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" id="dni" type="text" placeholder="Create a password"
+                                                            oninput="controlInput('dni',num=true)" />
+                                                        <label for="dni">Dni</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" id="cuit_cuil" type="text" placeholder="Confirm password"
+                                                            oninput="controlInput('cuit_cuil',num=true)" />
+                                                        <label for="cuit_cuil">Cuit - Cuil</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 mb-0">
+                                                <div class="d-grid">
+                                                    <button type="button" id="botonAlta" class="btn btn-primary btn-block"
+                                                        onclick="altaCliente()">Crear Cliente</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--FIN MODALES-->
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <pie-pagina name="LiliAmel" anio="2022"></pie-pagina>
+                </footer>
+            </div>
+
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Caja</title>
+        <!--librarys-->
+        <link href="assets/boostrap-links/style.css" rel="stylesheet" />
+        <link href="assets/boostrap-links/bootstrap.min.css" rel="stylesheet">
+        <script src="assets/boostrap-links/all.js"></script>
+        <script src="assets/boostrap-links/bootstrap.bundle.min.js" ></script>
+        <script src="assets/boostrap-links/simple-datatables@latest"></script>
+        <!--css-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/estilos.css" rel="stylesheet" />
+        <link href="js/historial/estilos.css" rel="stylesheet" />
+        <!--js-->
+        <script src="js/servicio/api.js"></script>
+        <!--componentes-->
+        <script src="componentes/footer.js"></script>
+        <script src="componentes/barra-nav.js"></script>
+        <script src="componentes/barra-main.js"></script>
+    </head>
+    <!------------
+    TODO:
+    ------------->
+    <body class="sb-nav-fixed">
+        <barra-nav name="LiliNav"></barra-nav>
+        <div id="layoutSidenav">
+            <barra-main name="LiliMain"></barra-main>
+            <!--CONTENIDO-->
+            <div class="fondo" id="layoutSidenav_content">
+                <main>
+                    <div id="work-space" class="container-fluid px-4" >
+                            <!--div id="panel-historial">
+                                <div class="row form-group">
+                                    <h2 id="titulo" class="col-xl-3 col-md-3">Historial de Caja : </h2>
+                                    <div id="filtro1" class="col-xl-2 col-md-2 form-floating mb-3">
+                                        <input type="date" id="t1_from" class="form-control" />
+                                        <label for="t1_from"> Desde</label>
+                                    </div>
+    
+                                    <div id="filtro2" class="col-xl-2 col-md-2 form-floating mb-3">
+                                        <input type="date" id="t1_to" class="form-control" />
+                                        <label for="t1_to"> Hasta</label>
+                                    </div>
+                                    <div class="col-xl-2 col-md-2">
+                                        <button id="btn_cargar_transacciones" class="btn btn-primary" onclick="cargarCajas()">Filtrar fechas</button>      
+                                    </div>
+                                    <div id="blank" class="col-xl-1 col-md-1">
+
+                                    </div>
+                                    <div class="col-xl-2 col-md-2" id="logo-lili">
+                                        <img id="img-logo" src="../assets/img/logo.png" alt="Logo - LiliAmel"> 
+                                    </div>
+                                </div>
+                            </div--> 
+                            <div class="row pt-2">
+                                <div class="col-2">
+                                    <h2 id="titulo" class="warning" >CAJAS</h2>
+                                </div>
+                                <div id="filtro1" class="col-xl-2 col-md-2 form-floating mb-3">
+                                    <input type="date" id="t1_from" class="form-control" />
+                                    <label for="t1_from"> Desde</label>
+                                </div>
+
+                                <div id="filtro2" class="col-xl-2 col-md-2 form-floating mb-3">
+                                    <input type="date" id="t1_to" class="form-control" />
+                                    <label for="t1_to"> Hasta</label>
+                                </div>
+                                <div class="col-xl-2 col-md-2">
+                                    <button id="btn_cargar_transacciones" class="btn btn-primary text-black" onclick="cargarCajas()">Filtrar fechas</button>      
+                                </div>
+                                <!--div class="col-xl-4 col-md-3">
+                                    <div class="input-group">
+                                        <input type="search" id="busqueda" class="form-control"
+                                               placeholder="Buscar Producto.."
+                                               aria-label="Search" onkeyup="filtrarTabla('busqueda','tabla_productos')"
+                                               aria-describedby="search-addon"/>
+                                        <span class="input-group-text " id="search-addon">
+                                                        <i class="fas fa-search"></i>
+                                                    </span>
+                                    </div>
+                                </div>
+                                
+                                <div id="blank" class="col-xl-2 col-md-2">
+            
+                                </div-->
+                            </div>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="tab-caja-activa" data-bs-toggle="pill" 
+                                                data-bs-target="#caja-activa" type="button" role="tab" 
+                                                aria-controls="cajaChica" aria-selected="true"
+                                                onclick="handleTab()">Transacciones del Día</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="tab-caja-historial" data-bs-toggle="pill" 
+                                                data-bs-target="#caja-historial" type="button" role="tab" 
+                                                aria-controls="cajaGrande" aria-selected="false"
+                                                onclick="handleTab()">Cajas por día</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div style="padding: 50px; " class="tab-pane fade show active" id="caja-activa" role="tabpanel" aria-labelledby="caja-activa">
+
+                                <!--Card -->
+                                <div id="t0_panelPrincipal">
+                                
+                                </div>
+
+                                <button type="button" class="btn btn-light bg-light" id="t0_btnPrev">Prev</button>
+                                <button type="button" class="btn btn-primary text-dark" id="t0_btnSig">Sig</button>
+                                Pagina: <span id="t0_indicePag"></span>
+                            </div>
+
+                            <div style="padding: 50px; " class="tab-pane fade" id="caja-historial" role="tabpanel" aria-labelledby="caja-historial">
+                                
+                                <div id="t1_panelPrincipal">
+                                
+                                </div>
+                                <button type="button"  class="btn btn-light bg-light" id="t1_btnPrev">Prev</button>
+                                <button type="button" class="btn btn-primary text-dark" id="t1_btnSig">Sig</button>
+                                Pagina: <span id="t1_indicePag"></span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade modal-lg" id="modalInfoCaja"
+                     data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+                     role="dialog" aria-labelledby="modalInfoCajaLabel" aria-hidden="true">
+                     <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Movimientos de Caja</h4>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form id="formInfoCaja">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <p class="font-weight-bold">Fecha: </p><p id="labelFecha"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <p class="font-weight-bold">Dinero Inicial: </p><p id="labelDineroInicial"></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <p class="font-weight-bold">Dinero Final: </p><p id="labelDineroFinal"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <p class="font-weight-bold">Movimientos de caja:</p>
+                                            </div>
+                                            <hr>
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <div id="cabeceraTablaInfoCaja"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 mb-0">
+                                        <div class="d-grid"><a class="btn btn-danger" data-bs-dismiss="modal">Salir</a></div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <pie-pagina name="LiliAmel" anio="2022"></pie-pagina>
+                </footer>
+
+                <script src="js/cajas/logica.js"></script>
+                <script src="js/historial/logica.js"></script>
+            </div>
+        </div>
+    </body>
+</html>

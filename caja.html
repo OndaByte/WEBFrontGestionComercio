@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <title>Caja</title>
+    <!--librarys-->
+    <link href="assets/boostrap-links/style.css" rel="stylesheet" />
+    <link href="assets/boostrap-links/bootstrap.min.css" rel="stylesheet">
+    <script src="assets/boostrap-links/all.js"></script>
+    <script src="assets/boostrap-links/bootstrap.bundle.min.js"></script>
+    <script src="assets/boostrap-links/simple-datatables@latest"></script>
+    <!--css-->
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/estilos.css" rel="stylesheet" />
+    <!--js-->
+    <script src="js/servicio/api.js"></script>
+    <script src="js/cajas/logica.js"></script>
+    <script src="js/cajas/venta/logica.js"></script>
+    <script src="js/cajas/pedido/logica.js"></script>
+    <script src="js/cajas/movimiento/logica.js"></script>
+    <!--componentes-->
+    <script src="componentes/footer.js"></script>
+    <script src="componentes/barra-nav.js"></script>
+    <script src="componentes/barra-main.js"></script>
+</head>
+<!------------
+    TODO:
+    ------------->
+
+<body class="sb-nav-fixed">
+    <barra-nav name="LiliNav"></barra-nav>
+    <div id="layoutSidenav">
+        <barra-main name="LiliMain"></barra-main>
+        <!--CONTENIDO-->
+        <div class="fondo" id="layoutSidenav_content">
+            <main>
+                <div id="work-space" class="container-fluid ">
+                    <div class="row pt-2">
+
+                        <div class="col-1">
+                            <h2 class="warning">CAJA</h2>
+                        </div>
+                        <div class="col-3">
+                            <input type="search" id="dinero_inicial" class="form-control rounded"
+                                placeholder="Saldo Inicial"/>
+                        </div>
+                        <div class="col-2">
+                            <button type="button" id="btnInicializarCaja" class="btn btn-primary text-dark shadow-sm"
+                                    onclick="abrirCajaCerrar()">Abrir Caja
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <h3>
+                                <span class="badge rounded-pill bg-primary text-dark" id="dinero_total">
+                                Saldo :
+                            </span>
+                            </h3>
+
+                        </div>
+
+                            <div class="tab-content m-2 mt-4 " id="venta-tabContent">
+                                <div>
+                                    <ul class="nav nav-pills mb-3" id="caja-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="tab-venta" data-bs-toggle="pill"
+                                                data-bs-target="#realizarVenta" type="button" role="tab"
+                                                aria-controls="realizarVenta" aria-selected="true">Realizar Venta
+                                            </button>
+                                        </li>
+                                        <!--li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="tab-pedido" data-bs-toggle="pill"
+                                                data-bs-target="#realizarPedido" type="button" role="tab"
+                                                aria-controls="realizarPedido" aria-selected="false">Realizar Pedido
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="tab-movimiento" data-bs-toggle="pill"
+                                            data-bs-target="#realizarMovimiento" type="button" role="tab"
+                                            aria-controls="realizarMovimiento"
+                                            aria-selected="false">Extraccion/Ingreso
+                                    </button>
+                                </li-->
+                                    </ul>
+                                </div>
+                                <!--
+                                    Cosas VENTA
+                                -->
+                                <div class="tab-pane fade show active " id="realizarVenta" role="tabpanel"
+                                    aria-labelledby="realizarVenta">
+                                    <!--div--> 
+
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-table me-1"></i>
+                                            MENU 
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="input-group rounded w-50">
+                                                <input style="margin: 20px;" class="form-control rounded" id="busqueda_producto" type="text"
+                                                    onkeyup="filtrarTabla('busqueda_producto','tabla_productos')" placeholder="Buscar Producto..">
+                                                </div>
+
+                                            <!--Card -->
+                                            <div class="overflow-scroll" id="body_scrollable" style="max-height: 400px;">
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col col-xl-6 col-md-6 p-1" id="tablaProductos">
+                                                            <!--content-->
+                                                        </div>
+                                                        <div class="col col-xl-6 col-md-6 p-1" id="tablaItemsVenta">
+                                                            <!--content-->
+                                                        </div>
+                                                    </div>
+                                                    <!--button type="button" class="btn btn-success" id="btnPrev">Prev</button>
+                                            <button type="button" class="btn btn-success" id="btnSig">Sig</button>
+                                            Pagina: <span id="indicePag"></span-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex">
+                                                    <h2 id="label_total_text">Total Venta : $</h2>
+                                                    <h2 id="label_total" class="mx-2">0</h2>
+                                                </div>
+                                                <!--div class="mx-2">
+                                                    <button type="button" class="btn btn-success" id="btn_venta"
+                                                        data-bs-dismiss="modal" onclick="nuevaVenta()">Aceptar
+                                                    </button>
+                                                </div-->
+                                            </div>
+                                            <!--footer-->
+                                            <div style="display:flex;">
+
+                                            </div>
+                                            <!--vender-->
+                                            <button type="button" id="btn_venta" class="btn btn-primary text-dark"
+                                                data-bs-toggle="modal" data-bs-target="#modalVenta">Aceptar
+                                            </button>
+                                            <!--button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="reiniciarModal()">Cancelar</button-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--
+                                Fin realizar Venta
+                            -->
+                                <!--
+                                    Realizar Pedido
+                                -->
+                                <div class="tab-pane fade" id="realizarPedido" role="tabpanel"
+                                    aria-labelledby="realizarPedido">
+
+                                                    <!-- <div class="row">
+                                                <div class="col-3">
+                                                    <button type="button" id="botonPedido" onclick="p_crearPanelPedido()"
+                                                            class="btn btn-primary text-dark my-2">Nuevo Pedido
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!--Card - 
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <i class="fas fa-table me-1"></i>
+                                                    Menu Pedido
+                                                </div>
+                                                <div class="card-body">
+                                                    <form id="p_formPedido">
+
+                                                        <div class="input-group rounded w-100">
+                                                            <button style="margin: 5px;" type="button" class="btn btn-success"
+                                                                    id="p_btn_buscador_cliente" data-bs-toggle="modal"
+                                                                    data-bs-target="#modalCliente" onclick="crearPanelModalCliente()"
+                                                                    disabled="true">Elegir Cliente
+                                                            </button>
+                                                            <input style="margin: 5px;" type="search" id="p_label_cliente"
+                                                                class="form-control rounded " disabled="true"/>
+                                                            <input style="margin: 5px;" type="text" id="p_metodo_pago"
+                                                                class="form-control rounded " placeholder="Forma de Pago"
+                                                                disabled="true"/>
+                                                            <label style="margin: 10px 0px 0px 0px;" class="rounded "
+                                                                for="p_plazo_entrega"><b>A entregar : </b></label>
+                                                            <input style="margin: 5px;" type="date" id="p_plazo_entrega"
+                                                                class="form-control rounded " disabled="true"/>
+
+                                                        </div>
+                                                        <div class="conteiner-fluid">
+                                                            <div class="row">
+                                                                <div class="col-xl-6 col-md-6">
+                                                                    <div class="input-group rounded w-100">
+                                                                    </div>
+                                                                    <div class="input-group rounded w-100">
+                                                                        <input style="margin: 5px;" class="form-control rounded"
+                                                                            id="p_busqueda_producto" type="text"
+                                                                            onkeyup="filtrarTabla('p_busqueda_producto','p_tabla_productos')"
+                                                                            placeholder="Buscar Producto.." disabled="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <div class="overflow-scroll" id="p_body_scrollable" style="max-height: 400px;">
+                                                        <div class="conteiner-fluid">
+                                                            <div class="row">
+                                                                <div class="col-xl-6 col-md-6">
+                                                                    <div id="p_tablaProductos">
+                                                                        <!--content>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-6 col-md-6">
+                                                                    <div id="p_tablaItemsPedido">
+                                                                        <!--content>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--button type="button" class="btn btn-success" id="p_btnPrev">Prev</button>
+                                                            <button type="button" class="btn btn-success" id="p_btnSig">Sig</button>
+                                                            Pagina: <span id="p_indicePag"></span>
+                                                        </div>
+                                                    </div>
+                                                    <!--footer-->
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <!--footer
+                                                    <div style="display:flex;">
+                                                        -->
+                                                    <h2 id="p_label_total_text" style="margin-left:40px;">Proximamente ...</h2>
+                                                    <h2 id="p_label_total_text" style="margin-left:40px;">Pasa el logo de Mr. queso pangui!
+                                                    </h2>
+                                                    <!--    <h2 id="p_label_total" style="margin-left:40px;">0</h2>
+                                                    </div>
+                                                    <button type="button" class="btn btn-success" id="btn_pedido" data-bs-dismiss="modal"
+                                                            onclick="nuevoPedido()">Aceptar
+                                                    </button>-->
+                                </div>
+                            <!--
+                                        MODALES
+                                En el boton “aceptar” cambiar funcion por una pantalla (modal) de confirmar con los siguientes inputs:
+
+                                    Tipo de venta: select
+                                        0 : P/llevar
+                                        1: DELIVERY
+                                        2: Local
+                                        3: SALÓN
+                                    Domicilio: Text area
+                                    Forma de pago: input
+                                    Pago: input float
+                                    vuelto: label calculado: total - pago
+
+                                En esta pantalla colocar el boton aceptar con la misma funcion actual y sumando estos nuevos campos
+
+                                Body ejemplo del post: /Venta                                -->
+                            <div class="modal fade " id="modalVenta" tabindex="-1" aria-hidden="true"
+                                aria-labelledby="modalVentaLabel" data-bs-backdrop="static" data-bs-keyboard="false"
+                                role="dialog">
+
+                                <div class="modal-dialog col-lg-7" role="document">
+                                    <div class="modal-content " id="form-venta">
+                                        <div class="modal-header menu-interno">
+                                            <div class=" w-100 justify-content-center">
+                                                <h3 id="modalTitulo" class="text-center font-weight-light my-4">Completar
+                                                    Venta</h3>
+                                            </div>
+                                            <button style="margin-right: 10px;" type="button" class="btn-close"
+                                                data-bs-dismiss="modal" aria-label="Cerrar"
+                                                onclick="limpiarForm('formVenta')">
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="formVenta">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating mb-3">
+                                                            <select class="form-select" id="tipo_venta">
+                                                                <option value="0">Delivery</option>
+                                                                <option value="1">Para Llevar</option>
+                                                                <option value="2">Local</option>
+                                                                <option value="3">Salon</option>
+                                                            </select>
+                                                            <label for="inputTipoVenta">Tipo de Venta</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating mb-3 mb-md-0">
+                                                            <input type="date" id="fecha_pago" disabled="true"
+                                                                class="form-control rounded" />
+                                                            <label for="fecha_pago">Fecha de Pago</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating mb-3">
+                                                            <select class="form-select" id="metodo_pago">
+                                                                <!--option value="delivery">Efectivo</option>
+                                                                    <option value="mercado_pago">Mercado Pago</option>
+                                                                    <option value="debito">Debito</option>
+                                                                    <option value="cripto">Cripto</option>
+                                                                    <option value="otro">Otro</option-->
+                                                                <option value="Efectivo">Efectivo</option>
+                                                                <option value="Mercado Pago">Mercado Pago</option>
+                                                                <option value="Debito">Debito</option>
+                                                                <option value="Cripto">Cripto</option>
+                                                                <option value="Otro">Otro</option>
+                                                            </select>
+                                                            <label for="inputTipoVenta">Forma de Pago</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating">
+                                                            <input class="form-control" id="monto" type="text"
+                                                                oninput="controlInput('monto',num=true)" required="true" />
+                                                            <label for="monto">Monto $</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-floating mb-3">
+                                                    <input class="form-control" id="direccion" type="text" />
+                                                    <label for="domicilio">Domicilio</label>
+                                                </div>
+                                                <div class="mt-4 mb-0">
+                                                    <div class="d-grid">
+                                                        <button type="button" id="botonAlta"
+                                                            class="btn btn-primary btn-block"
+                                                            onclick="nuevaVenta()">Imprimir Comanda</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade modal-lg" id="modalCliente" tabindex="-1" role="dialog"
+                                aria-labelledby="modalVentaLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <input style="margin: 20px;" class="form-control rounded"
+                                                id="btn-busqueda-cliente" type="text"
+                                                onkeyup="filtrarTabla('p_btn-busqueda-cliente','clientesTabla')"
+                                                placeholder="Buscar Cliente..">
+                                        </div>
+
+                                        <div id="modal-body-cliente" class="modal-body">
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!--
+                                    Fin realizar Pedido
+                            -->
+                        <!--
+                                        MOVIMIENTOS
+                                    -->
+                        <div class="tab-pane fade" id="realizarMovimiento" role="tabpanel"
+                            aria-labelledby="realizarMovimiento">
+                            <div class="conteiner-fluid">
+                                <div class="row">
+                                    <div class="col-xl-6 col-md-6 w-100">
+                                        <button id="btn-ingresar" onclick="habilitarInputsMovimiento(false)"
+                                            class="btn btn-success col-xl-3 col-md-3">Ingresar
+                                        </button>
+                                        <button id="btn-extraer" onclick="habilitarInputsMovimiento(true)"
+                                            class="btn btn-danger col-xl-3 col-md-3">Extraer
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <h3>Ingrese la cantidad:</h3>
+                            <input type="text" id="total_mov" disabled="true" class="form-control rounded w-50"
+                                placeholder="..." />
+                            <br>
+                            <h3>Descripción del movimiento:</h3>
+                            <textarea class="form-control w-50" id="descripcion_mov" aria-label="With textarea"></textarea>
+                            <br>
+                            <button type="button" id="botonMovimiento" class="btn btn-primary btn-lg w-50"
+                                onclick="movimientoCash()">Ingresar Dinero
+                            </button>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+        <!--Cierre Conteiner-->
+        </main>
+        <footer class="py-4 mt-auto">
+            <pie-pagina name="MisterQueso" anio="2023"></pie-pagina>
+        </footer>
+        <!-- <footer class="py-4 bg-light mt-auto">
+             <pie-pagina name="LiliAmel" anio="2022"></pie-pagina>
+         </footer>-->
+        </div> 
+    </div>
+</body>
+
+</html>

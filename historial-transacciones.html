@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Caja</title>
+        <!--librarys-->
+        <link href="assets/boostrap-links/style.css" rel="stylesheet" />
+        <link href="assets/boostrap-links/bootstrap.min.css" rel="stylesheet">
+        <script src="assets/boostrap-links/all.js"></script>
+        <script src="assets/boostrap-links/bootstrap.bundle.min.js" ></script>
+        <script src="assets/boostrap-links/simple-datatables@latest"></script>
+        <!--css-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/estilos.css" rel="stylesheet" />
+        <link href="js/transacciones/estilos.css" rel="stylesheet" />
+        <!--componentes-->
+        <script src="componentes/footer.js"></script>
+        <script src="componentes/barra-nav.js"></script>
+        <script src="componentes/barra-main.js"></script>
+    </head>
+    <!------------
+    TODO:
+    ------------->
+    <body class="sb-nav-fixed">
+        <barra-nav name="LiliNav"></barra-nav>
+        <div id="layoutSidenav">
+            <barra-main name="LiliMain"></barra-main>
+            <!--CONTENIDO-->
+            <div class="fondo" id="layoutSidenav_content">
+                <main>
+                    <div id="work-space" class="container-fluid px-4" >
+                        <div class="row pt-2" id = "filtros-panel">
+                            <div class="col-2">
+                                <h2 class="warning">TRANSACCIONES</h2>
+                            </div>
+                        </div>
+                        <div class="row pt-2" id = "filtros-panel">
+                             
+                            <div id="blank" class="col-xl-1 col-md-2">
+        
+                            </div>
+                            <div class="col-xl-2 col-md-2 form-floating mb-3">
+                                <input type="date" id="from" class="form-control" />
+                                <label for="from"> Desde</label>
+                            </div>
+
+                            <div class="col-xl-2 col-md-2 form-floating mb-3">
+                                <input type="date" id="to" class="form-control" />
+                                <label for="to"> Hasta</label>
+                            </div>
+                            <div class="col-xl-2 col-md-2 form-floating mb-3">
+                                <select class="form-select form-select-sm" id="tipo_venta">
+                                    <option selected value="-1">Todas</option>
+                                    <option value="0">Delivery</option>
+                                    <option value="1">Para Llevar</option>
+                                    <option value="2">Local</option>
+                                    <option value="3">Salon</option>
+                                  </select>
+                                  <label for=""> Tipo de Venta</label>
+                            </div>
+                            <div class="col-xl-2 col-md-2 form-floating mb-3">
+                                <select class="form-select form-select-sm" id="metodo_pago">
+                                    <option selected value="-1">Todas</option>
+                                    <option value="0">Efectivo</option>
+                                    <option value="1">Mercado Pago</option>
+                                    <option value="2">Debito</option>
+                                    <option value="3">Otro</option>
+                                  </select>
+                                  <label for=""> Forma de Pago</label>
+                            </div>
+                            <div class="col-xl-2 col-md-2">
+                                <button id="btn_cargar_transacciones" class="btn btn-primary text-dark" onclick="cargarTransacciones()">Buscar</button>      
+                            </div>
+                        </div>
+
+
+		                    
+                            <div style="padding: 50px; " >
+
+                                <!--Card -->
+                                <div id="panelPrincipal">
+                                    
+                                </div>
+                                <p id="sumaTotal">Total : $0 </p>
+                                <button type="button" class="btn btn-light bg-light" id="btnPrev">Prev</button>
+                                <button type="button" class="btn btn-primary text-dark" id="btnSig">Sig</button>
+                                Pagina: <span id="indicePag"></span>
+                            </div>
+
+                        
+                    </div>
+
+
+                    <div class="modal fade modal-lg" id="modalInfoCaja"
+                     data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+                     role="dialog" aria-labelledby="modalInfoCajaLabel" aria-hidden="true">
+                     <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Movimientos de Caja</h4>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form id="formInfoCaja">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <p class="font-weight-bold">Fecha: </p><p id="labelFecha"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <p class="font-weight-bold">Dinero Inicial: </p><p id="labelDineroInicial"></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <p class="font-weight-bold">Dinero Final: </p><p id="labelDineroFinal"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <p class="font-weight-bold">Movimientos de caja:</p>
+                                            </div>
+                                            <hr>
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <div id="cabeceraTablaInfoCaja"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 mb-0">
+                                        <div class="d-grid"><a class="btn btn-danger" data-bs-dismiss="modal">Salir</a></div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade " id="modalDetalleTransaccion" tabindex="-1" aria-hidden="true"
+                        aria-labelledby="modalVentaLabel" data-bs-backdrop="static" data-bs-keyboard="false"
+                        role="dialog">
+
+                        <div class="modal-dialog col-lg-7" role="document">
+                            <div class="modal-content " id="form-venta">
+                                <div class="modal-header menu-interno">
+                                    <div class=" w-100 justify-content-center">
+                                        <h3 id="modalTitulo" class="text-center font-weight-light my-4">Detalle de la Transaccion</h3>
+                                    </div>
+                                    <button style="margin-right: 10px;" type="button" class="btn-close"
+                                        data-bs-dismiss="modal" aria-label="Cerrar"
+                                        onclick="salirModal()"> 
+                                </div>
+                                <div class="modal-body">
+                                    <div style="padding: 50px; " >
+
+                                        <!--Card -->
+                                        <div id="panelModalDetalleItemsVenta">
+                                            
+                                        </div>
+                                        
+                                        <button type="button" class="btn btn-light bg-light" id="btnPrev">Prev</button>
+                                        <button type="button" class="btn btn-primary text-dark" id="btnSig">Sig</button>
+                                        Pagina: <span id="indicePag"></span>
+                                    </div>
+
+
+                                    <!--
+                                    <form id="formProducto">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" id="inputProductoName" type="text"
+                                                            oninput="controlInput('inputProductoName',num=false)"/>
+                                                    <label for="inputProductoName">Nombre</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="inputProductoCosto" type="text"
+                                                            oninput="controlInput('inputProductoCosto',num=true)"/>
+                                                    <label for="inputProductoCosto">Costo de Produccion</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" id="inputProductoStock" type="text"
+                                                            oninput="controlInput('inputProductoStock',num=true)"/>
+                                                    <label for="inputProductoStock">Stock</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" id="inputProductoVenta" type="text"
+                                                            oninput="controlInput('inputProductoVenta',num=true)"/>
+                                                    <label for="inputProductoVenta">Precio</label>
+                                                </div>
+                                            </div>
+                                        </div>
+            
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="inputProductoIngredientes" type="text"/>
+                                            <label for="inputProductoIngredientes">Ingredientes</label>
+                                        </div>
+
+
+                                        <div class="mt-4 mb-0">
+                                            <div class="d-grid"><a class="btn btn-primary text-dark" onclick="agregarProducto()" id="botonAlta">Aceptar</a></div>
+                                        </div>
+                                    </form>
+                                -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <pie-pagina name="Mister Queso" anio="2024"></pie-pagina>
+                </footer>
+
+                <!--js-->
+                <script src="js/servicio/api.js"></script>
+                <script src="js/transacciones/logica.js"></script>
+            </div>
+        </div>
+    </body>
+</html>
