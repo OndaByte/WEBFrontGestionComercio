@@ -1,0 +1,6 @@
+#+TITLE: GestionComercio
+#+DESCRIPTION: Este repo apunta a hacer una version generica de un gestor de comercio.
+
+Este repo deberia implementar un "gestor/administrador de comercio". deberia poder cumplir con las funcionalidades de una caja, controlar stock, usuarios (cajero, admin), tener compatibilidad con lectores de barras e impresoras.
+
+Utilizando una arquitectura cliente servidor, este repo es un CLIENTE, el repo del servidor es [[https://github.com/OndaByte/BackEndGestionComercio]]
